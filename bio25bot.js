@@ -1,14 +1,15 @@
 'use strict';
 
-var port = process.env.PORT || 8080;
-var io = require('socket.io').listen(app.listen(port));
+
 
 var TelegramBot = require('node-telegram-bot-api');
 
 var TOKEN = '143051523:AAGfttyVAE7S3YDga_S6tBX4I3HJAes2-1I';
 var USER = 'bio25bot';
-
-var bot = new TelegramBot(TOKEN, {polling: true});
+var port = process.env.PORT || 8443;
+var host = process.env.HOST;
+var bot = new TelegramBot(TOKEN, {webHook: {port: port, host: host,polling:true}});
+//var bot = new TelegramBot(TOKEN, {polling: true});
 
 var Phrase = {
 	phraseId: 0,

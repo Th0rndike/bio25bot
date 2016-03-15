@@ -1,5 +1,8 @@
 'use strict';
 
+var port = process.env.PORT || 8080;
+var io = require('socket.io').listen(app.listen(port));
+
 var TelegramBot = require('node-telegram-bot-api');
 
 var TOKEN = '143051523:AAGfttyVAE7S3YDga_S6tBX4I3HJAes2-1I';

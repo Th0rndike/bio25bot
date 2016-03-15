@@ -7,7 +7,7 @@ var TelegramBot = require('node-telegram-bot-api');
 var TOKEN = '143051523:AAGfttyVAE7S3YDga_S6tBX4I3HJAes2-1I';
 var USER = 'bio25bot';
 var port = process.env.PORT || 8080;
-var host = process.env.HOST || 0.0.0.0;
+var host = process.env.HOST;
 var bot = new TelegramBot(TOKEN, {webHook: {port: port, host: host},polling:true});
 //var bot = new TelegramBot(TOKEN, {polling: true});
 
@@ -163,7 +163,7 @@ var PhraseChooser = {
 						for(var i=0;i<phrase.wordsToMatch.length;i++){
 							//console.log('matching ' + msg.text +' with ' + phrase.wordsToMatch[i]);
 							if(msg_text.indexOf(phrase.wordsToMatch[i]) >= 0){
-								console.log('matched: ' + phrase.wordsToMatch[i]);
+								//console.log('matched: ' + phrase.wordsToMatch[i]);
 								return true;
 							}
 						}
@@ -231,7 +231,7 @@ var opts = {
 	/*bot.on('new_chat_participant', function(msg){
 
 	});*/
-	console.log(bot);
+	//console.log(bot);
   // Any kind of message
 	bot.on('message', function (msg) {
 		//console.log('messageArrived');

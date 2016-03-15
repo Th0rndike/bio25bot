@@ -8,7 +8,7 @@ var TOKEN = '143051523:AAGfttyVAE7S3YDga_S6tBX4I3HJAes2-1I';
 var USER = 'bio25bot';
 var port = process.env.PORT || 8080;
 var host = process.env.HOST || 0.0.0.0;
-var bot = new TelegramBot(TOKEN, {webHook: {port: port, host: host,polling:true}});
+var bot = new TelegramBot(TOKEN, {webHook: {port: port, host: host},polling:true});
 //var bot = new TelegramBot(TOKEN, {polling: true});
 
 var Phrase = {

@@ -1,1 +1,1 @@
-﻿web: node bio25bot.js
+﻿worker: node bio25bot.js

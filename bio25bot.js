@@ -33,6 +33,7 @@ var TYPE_IS_PHOTO = 2;
 var TYPE_STARTSWITH_EXCEPT = 3;
 var TYPE_WELCOME = 4;
 var TYPE_RANDOM = 5;
+var TYPE_CONTAINS_ALL = 6;
 
 var PhraseChooser = {
 	phraseCollection : [],
@@ -123,7 +124,7 @@ var PhraseChooser = {
 		this.phraseCollection.push(phrase20);
 
 		var phrase21 = Object.create(Phrase);
-		phrase21.initialize(21,['punti','ap'], 'Gli ap sono roba da puffi',TYPE_MATCH_WORD,false);
+		phrase21.initialize(21,['punti',' ap '], 'Gli ap sono roba da puffi',TYPE_MATCH_WORD,false);
 		this.phraseCollection.push(phrase21);
 
 		var phrase22 = Object.create(Phrase);
@@ -146,24 +147,75 @@ var PhraseChooser = {
 		phrase26.initialize(26,['natul','renatul','bannatul'], 'Natul è il giocatore più forte d\'europa',TYPE_MATCH_WORD,false);
 		this.phraseCollection.push(phrase26); 		 		
 
+		var phrase27 = Object.create(Phrase);
+		phrase27.initialize(27,['natul','renatul','bannatul'], 'Sciacquati la bocca prima di parlare di Natul',TYPE_MATCH_WORD,false);
+		this.phraseCollection.push(phrase27); 
+
+		var phrase28 = Object.create(Phrase);
+		phrase28.initialize(28,['enl','illuminati','enlightened','lampadine','muffe'], 'Sciacquati la bocca prima di parlare degli illuminati',TYPE_MATCH_WORD,true);
+		this.phraseCollection.push(phrase28); 
+
+		var phrase29 = Object.create(Phrase);
+		phrase29.initialize(29,['sborlotto','denuncia','denunciato','palby'], '@SBORLOTTO hai denunciato @palby ?',TYPE_MATCH_WORD,false);
+		this.phraseCollection.push(phrase29); 
+
+		var phrase30 = Object.create(Phrase);
+		phrase30.initialize(30,[' ddo'], 'Sciacquati la bocca prima di parlare del ddo',TYPE_MATCH_WORD,true);
+		this.phraseCollection.push(phrase30); 
+
+		var phrase31 = Object.create(Phrase);
+		phrase31.initialize(31,['amici','persone','sul cazzo'], 'Io non ho amici, solo persone che mi stanno meno sul cazzo di altre',TYPE_MATCH_WORD,false);
+		this.phraseCollection.push(phrase31); 	
+
+		var phrase31 = Object.create(Phrase);
+		phrase31.initialize(31,['crossfaction',' xf ','odiare','odiamo','sincerità'], 'Guarda che qua nessuno approva crossfaction. Ci odiamo con sincerità',TYPE_MATCH_WORD,false);
+		this.phraseCollection.push(phrase31); 	
+
+		var phrase32 = Object.create(Phrase);
+		phrase32.initialize(32,['cagare','cagando','facendo la cacca'], 'Io non cago mai...per essere più cattivo',TYPE_MATCH_WORD,false);
+		this.phraseCollection.push(phrase32); 
+
+		var phrase33 = Object.create(Phrase);
+		phrase33.initialize(33,['bot','bio25bot','cittoni',' tg ', 'telegram'], 'Ma con tutti i cittoni che avete nella resistenza possibile che non riuscite a fare un cazzo di bot TG?',TYPE_MATCH_WORD,false);
+		this.phraseCollection.push(phrase33);
+
+		//var phrase34 = Object.create(Phrase);
+		//phrase34.initialize(34,['bot','bio25bot','cittoni',' tg ', 'telegram'], 'Ma con tutti i cittoni che avete nella resistenza possibile che non riuscite a fare un cazzo di bot TG?',TYPE_MATCH_WORD,false);
+		//this.phraseCollection.push(phrase34);
+
+		var phrase35 = Object.create(Phrase);
+		phrase35.initialize(35,['denuncia','piange','piangina'], 'Sì ora piange e denuncia tutti',TYPE_MATCH_WORD,false);
+		this.phraseCollection.push(phrase35);
+
+		var phrase36 = Object.create(Phrase);
+		phrase36.initialize(36,['ha problemi','problemi ha','hai problemi'], 'Siediti, hai tempo?',TYPE_MATCH_WORD,true);
+		this.phraseCollection.push(phrase36);
+
+		var phrase37 = Object.create(Phrase);
+		phrase37.initialize(37,['piange'], 'Sicuramente non abbastanza',TYPE_MATCH_WORD,true);
+		this.phraseCollection.push(phrase37);
+
+		var phrase38 = Object.create(Phrase);
+		phrase38.initialize(38,[['puffi','bravi'],['puffi','forti'],['puffi','simpatici'],['resistenza','brava'],['resistenza','forte']], 'Hahahahahahahahahaha fa sempre ridere (puffimmerda)',TYPE_CONTAINS_ALL,true);
+		this.phraseCollection.push(phrase38);
+
+		var phrase39 = Object.create(Phrase);
+		phrase39.initialize(39,['#nowhine'], 'sei il puffo piu all\'avanguardia che conosco',TYPE_MATCH_WORD,true);
+		this.phraseCollection.push(phrase39);
+
 		console.log('done!');
 	},
 	findWordMatches: function(msg){
-		//console.log(this.phraseCollection);
 		var isPhoto = msg.photo != undefined;
 		console.log('MSG: ');
 		console.log(msg);
 		var msg_text = (!isPhoto) ? msg.text.toLowerCase() : '';
-		//console.log('msgtxt: ' + msg_text);
-		//console.log(isPhoto + '|' + msg_text + '|');
 		var result = this.phraseCollection.filter(function(phrase){
 			if(!isPhoto){
 				switch(phrase.phraseType){
 					case TYPE_MATCH_WORD:
 						for(var i=0;i<phrase.wordsToMatch.length;i++){
-							//console.log('matching ' + msg.text +' with ' + phrase.wordsToMatch[i]);
 							if(msg_text.indexOf(phrase.wordsToMatch[i]) >= 0){
-								//console.log('matched: ' + phrase.wordsToMatch[i]);
 								return true;
 							}
 						}
@@ -187,6 +239,16 @@ var PhraseChooser = {
 						var random = Math.floor(Math.random() * 100);
 						if(random <= showPerc)
 							return true;
+					break;
+					case TYPE_CONTAINS_ALL:
+						for(var i=0;i<phrase.wordsToMatch.length;i++){
+							var finalResult = true;
+							for (var j=0;j<phrase.wordsToMatch[i].length;j++){
+									finalResult = finalResult && (msg_text.indexOf(phrase.wordsToMatch[i][j]) >= 0);
+							}
+							if(finalResult)
+								return true;
+						}
 					break;
 					default:
 					return false;
@@ -212,31 +274,13 @@ var PhraseChooser = {
 
 var pc = Object.create(PhraseChooser);
 pc.initialize();
-//console.log(pc.phraseCollection);
 var opts = {
   reply_markup: JSON.stringify(
     {
       force_reply: true
     }
   )};
-	//console.log('oltreopts')
-  	/*bot.on('photo',function(msg){
-  		console.log('photo!');
-  		var matches = pc.findPhotoMatches(msg);
-  		console.log('FINAL MATCHES');
-  		console.log(matches);
-  		bot.sendMessage(msg.chat.id,matches[0].phraseResult, {reply_to_message_id: msg.message_id});
-  	});*/
-	
-	/*bot.on('new_chat_participant', function(msg){
-
-	});*/
-	//console.log(bot);
-  // Any kind of message
 	bot.on('message', function (msg) {
-		//console.log('messageArrived');
-		//console.log('message: ');
-		//console.log(msg);
 		
 	  var matches = pc.findWordMatches(msg);
 	  	console.log('FINAL MATCHES:');
@@ -254,7 +298,6 @@ var opts = {
 		  }	
 	  }else if(matches.length > 1){
 	  	var resIndex = Math.floor(Math.random() * matches.length);
-	  	//console.log('length: ' + matches.length + ' rand: ' + resIndex);
 	  	if(!matches[resIndex].reply){
 	  		bot.sendMessage(chatId,matches[resIndex].phraseResult);
 		  }else{
